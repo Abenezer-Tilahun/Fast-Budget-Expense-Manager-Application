@@ -20,38 +20,24 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config
 
-# Copy Gemfile for dependency installation
-COPY Gemfile Gemfile.lock ./
-RUN bundle install --without development test && \
-    rm -rf "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
-
-# Continue with the rest of the build
+# Consolidate COPY statements
+COPY Gemfile* ./
 COPY . .
 
-# Adjust binfiles to be executable on Linux
-RUN chmod +x bin/* && \
-    sed -i "s/\r$//g" bin/* && \
-    sed -i 's/ruby\.exe$/ruby/' bin/*
+# Copy Gemfile for dependency installation
+RUN bundle install --without development test
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# Separate precompile step
+RUN bundle exec bootsnap precompile --gemfile
 
-# Final stage for app image
-FROM base
+# Clean up build dependencies
+RUN apt-get remove --purge -y build-essential git && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install packages needed for deployment
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Copy built artifacts: gems, application
-COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /rails /rails
-
-# Run and own only the runtime files as a non-root user for security
+# User creation and directory ownership
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+    chown -R rails:rails /rails
 USER rails:rails
 
 # Entrypoint prepares the database.
