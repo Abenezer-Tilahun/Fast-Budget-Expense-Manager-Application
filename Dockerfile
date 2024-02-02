@@ -10,8 +10,7 @@ WORKDIR /rails
 # Set production environment
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development test"
+    BUNDLE_PATH="/usr/local/bundle"
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
@@ -29,9 +28,8 @@ RUN gem install bundler
 # Copy Gemfile for dependency installation
 COPY Gemfile Gemfile.lock ./
 
-# Debugging: set without configuration option
-RUN bundle config set --local without 'development test' && \
-    bundle install
+# Install dependencies without development and test groups
+RUN bundle install --without development test
 
 # Continue with the rest of the build
 COPY . .
