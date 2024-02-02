@@ -86,4 +86,4 @@ test:
 production:
   <<: *default
   database: budget_app_production
-  url: postgres://budget_app_production_utcu_user:ixtq235acZ0UujC3fMhgaY8HgwmxrF2u@dpg-cms54rn109ks73ds1i0g-a/budget_app_production_utcu
+  url: postgres://budget_app_production_utcu_user:ixtq235acZ0UujC3fMhgaY8HgwmxrF2u@dpg-cms54rn109ks73ds1i0g-a.oregon-postgres.render.com/budget_app_production_utcu
