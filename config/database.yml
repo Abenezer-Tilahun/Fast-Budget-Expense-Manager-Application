@@ -86,6 +86,4 @@ test:
 production:
   <<: *default
   database: budget_app_production
-  username: budget_app
   url: postgres://budget_app_production_utcu_user:ixtq235acZ0UujC3fMhgaY8HgwmxrF2u@dpg-cms54rn109ks73ds1i0g-a/budget_app_production_utcu
-  password: ixtq235acZ0UujC3fMhgaY8HgwmxrF2u
