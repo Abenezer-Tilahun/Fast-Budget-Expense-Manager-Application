@@ -11,12 +11,23 @@ module BudgetApp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
+    # Database Configuration
+    config.database_configuration_file = File.join(Rails.root, 'config', 'database.yml')
+    
+    # Assets Configuration
+    config.assets.enabled = true
+    config.assets.version = '1.0'
+
+    # Credentials Configuration
+    config.credentials = Rails.application.credentials
+
+    # Time Zone Configuration
+    config.time_zone = "Eastern Time (US & Canada)"
+
+    # Eager Load Paths
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Rack Middleware
+    # config.middleware.use MyMiddleware
   end
 end
