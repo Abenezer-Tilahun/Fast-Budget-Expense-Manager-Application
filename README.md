@@ -41,7 +41,7 @@
 ![](./Images/Home.PNG)
 
 > The goal of the project is to build the RoR application using Ruby on Rails by ruby gems as software packages system.   
-Click [Live](https://budget-app21.herokuapp.com/) to get a live preview of the project.
+Click [Live](https://fast-budget-expense-manager-application.onrender.com/) to get a live preview of the project.
 
 ## EDR diagram
 
